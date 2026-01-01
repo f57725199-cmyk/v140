@@ -67,14 +67,13 @@ export const UniversalChatV2: React.FC<Props> = ({ currentUser, onUserUpdate, is
                   if (data) {
                       const sessions: ChatSession[] = Object.keys(data).map(key => {
                           const msgs = data[key].messages;
-                          const msgList = msgs ? Object.values(msgs) : [];
-                          // @ts-ignore
+                          const msgList = msgs ? Object.values(msgs) as ChatMessage[] : [];
                           const lastMsg = msgList.length > 0 ? msgList[msgList.length - 1] : null;
                           return {
                               studentId: key,
                               studentName: data[key].studentName || 'Unknown Student', 
-                              lastMessage: lastMsg ? lastMsg.text : '',
-                              timestamp: lastMsg ? new Date(lastMsg.timestamp).getTime() : 0
+                              lastMessage: lastMsg?.text ?? '',
+                              timestamp: lastMsg?.timestamp ? new Date(lastMsg.timestamp).getTime() : 0
                           };
                       });
                       setChatSessions(sessions.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0)));

@@ -16,16 +16,16 @@ export const FloatingDock: React.FC<Props> = ({ onTabSelect, onGoHome, onGoBack,
     if (!isStudent) return null; 
 
     const menuItems: { id: StudentTab, icon: any, label: string, color: string }[] = [
-        { id: 'VIDEO', icon: Youtube, label: 'Video', color: 'text-red-600' },
-        { id: 'PDF', icon: FileText, label: 'Notes', color: 'text-blue-600' },
-        { id: 'MCQ', icon: CheckSquare, label: 'MCQ', color: 'text-purple-600' },
-        { id: 'CHAT', icon: MessageCircle, label: 'Chat', color: 'text-green-600' },
-        { id: 'LEADERBOARD', icon: Trophy, label: 'Rank', color: 'text-yellow-600' },
-        { id: 'GAME', icon: Gamepad2, label: 'Game', color: 'text-orange-600' },
-        { id: 'HISTORY', icon: History, label: 'History', color: 'text-slate-600' },
-        { id: 'REDEEM', icon: Gift, label: 'Redeem', color: 'text-pink-600' },
-        { id: 'STORE', icon: ShoppingBag, label: 'Store', color: 'text-blue-500' },
-        { id: 'PROFILE', icon: Settings, label: 'Profile', color: 'text-indigo-600' },
+        { id: 'VIDEO' as StudentTab, icon: Youtube, label: 'Video', color: 'text-red-600' },
+        { id: 'PDF' as StudentTab, icon: FileText, label: 'Notes', color: 'text-blue-600' },
+        { id: 'MCQ' as StudentTab, icon: CheckSquare, label: 'MCQ', color: 'text-purple-600' },
+        { id: 'CHAT' as StudentTab, icon: MessageCircle, label: 'Chat', color: 'text-green-600' },
+        { id: 'LEADERBOARD' as StudentTab, icon: Trophy, label: 'Rank', color: 'text-yellow-600' },
+        { id: 'GAME' as StudentTab, icon: Gamepad2, label: 'Game', color: 'text-orange-600' },
+        { id: 'HISTORY' as StudentTab, icon: History, label: 'History', color: 'text-slate-600' },
+        { id: 'REDEEM' as StudentTab, icon: Gift, label: 'Redeem', color: 'text-pink-600' },
+        { id: 'STORE' as StudentTab, icon: ShoppingBag, label: 'Store', color: 'text-blue-500' },
+        { id: 'PROFILE' as StudentTab, icon: Settings, label: 'Profile', color: 'text-indigo-600' },
     ].filter(item => {
         if (item.id === 'STORE' && settings?.isPaymentEnabled === false) return false;
         return true;

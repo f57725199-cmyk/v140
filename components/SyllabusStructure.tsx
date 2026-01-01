@@ -139,7 +139,7 @@ export const SyllabusStructure: React.FC<Props> = ({ user, onTopicClick, isAdmin
             <div>
                 <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
                     <Calendar className="text-blue-600" /> 
-                    ACADEMIC SEASON <span className="text-slate-400 font-normal text-sm ml-2">Class {classLevel}</span>
+                    ACADEMIC SESSION <span className="text-slate-400 font-normal text-sm ml-2">Class {classLevel}</span>
                 </h2>
                 <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">
                     Month {currentMonth} of 12 • FOUNDATION PHASE

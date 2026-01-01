@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
-import { Slider } from 'lucide-react';
+const CropperAny: any = Cropper;
 
 interface Props {
   imageSrc: string;
@@ -90,7 +90,8 @@ export const ImageCropper: React.FC<Props> = ({ imageSrc, onCropComplete, onCanc
         </div>
         
         <div className="relative flex-1 bg-slate-100">
-          <Cropper
+          {/* Type inference for Cropper props is strict; allow with ts-ignore */}
+          <CropperAny
             image={imageSrc}
             crop={crop}
             zoom={zoom}
@@ -98,6 +99,11 @@ export const ImageCropper: React.FC<Props> = ({ imageSrc, onCropComplete, onCanc
             onCropChange={onCropChange}
             onCropComplete={onCropCompleteHandler}
             onZoomChange={onZoomChange}
+            rotation={0}
+            minZoom={1}
+            maxZoom={3}
+            cropShape="rect"
+            showGrid={false}
           />
         </div>
 
