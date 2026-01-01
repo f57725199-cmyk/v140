@@ -203,7 +203,9 @@ export interface SystemSettings {
   // CONTENT CONTROL
   welcomeTitle?: string;  // NEW: Welcome Popup Title
   welcomeMessage?: string; // NEW: Welcome Popup Body
+  showWelcomePopup?: boolean; // NEW: Show Welcome Popup (true by default)
   termsText?: string;     // NEW: T&C Text
+  showTermsPopup?: boolean; // NEW: Show Terms Popup (true by default)
   supportEmail?: string;  // NEW: Support Email
   aiModel?: string;       // NEW: Select Gemeni Model (Flash vs Pro)
 
@@ -263,7 +265,7 @@ export interface SystemSettings {
   // WEEKLY TEST CONFIG
   weeklyTests?: WeeklyTest[]; // List of active weekly tests
   
-  seasonStartDate?: string; // NEW: ISO Date for Season Start
+  sessionStartDate?: string; // NEW: ISO Date for Session Start
 
   // POPUP AD CONFIG
   startupAd?: StartupConfig;
@@ -475,7 +477,7 @@ export interface StudentTestAttempt {
   answers: Record<number, number>; // question index -> selected answer index
 }
 
-export type StudentTab = 'HOME' | 'SEASON' | 'COURSES' | 'ROUTINE' | 'CHAT' | 'HISTORY' | 'REDEEM' | 'PREMIUM' | 'GAME' | 'WEEKLY_TEST' | 'PROFILE' | 'LEADERBOARD' | 'STORE' | 'VIDEO' | 'PDF' | 'MCQ' | 'ANALYTICS';
+export type StudentTab = 'HOME' | 'SESSION' | 'COURSES' | 'ROUTINE' | 'CHAT' | 'HISTORY' | 'REDEEM' | 'PREMIUM' | 'GAME' | 'WEEKLY_TEST' | 'PROFILE' | 'LEADERBOARD' | 'STORE' | 'VIDEO' | 'PDF' | 'MCQ' | 'ANALYTICS';
 
 export type Language = 'English' | 'Hindi';
 

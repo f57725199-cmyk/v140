@@ -39,7 +39,7 @@ type AdminTab =
   | 'DEMAND' 
   | 'RECYCLE' 
   | 'SYLLABUS_MANAGER' 
-  | 'SEASON_MANAGER'
+  | 'SESSION_MANAGER'
   | 'CONTENT_PDF' 
   | 'CONTENT_VIDEO'
   | 'CONTENT_MCQ' 
@@ -356,32 +356,32 @@ export const AdminDashboard: React.FC<Props> = ({ onNavigate, settings, onUpdate
       }
   };
 
-  // --- SEASON MANAGER STATE ---
-  const [seasonData, setSeasonData] = useState<Record<string, MonthlySyllabus[]>>(DEFAULT_SYLLABUS);
-  const [seasonJson, setSeasonJson] = useState('');
-  const [isEditingSeason, setIsEditingSeason] = useState(false);
+  // --- SESSION MANAGER STATE ---
+  const [sessionData, setSessionData] = useState<Record<string, MonthlySyllabus[]>>(DEFAULT_SYLLABUS);
+  const [sessionJson, setSessionJson] = useState('');
+  const [isEditingSession, setIsEditingSession] = useState(false);
 
   useEffect(() => {
     const storedSyllabus = localStorage.getItem('nst_syllabus_data');
     if (storedSyllabus) {
         try {
             const parsed = JSON.parse(storedSyllabus);
-            setSeasonData(parsed);
+            setSessionData(parsed);
         } catch(e) {}
     }
   }, []);
 
-  const handleSaveSeason = () => {
+  const handleSaveSession = () => {
       try {
-          const parsed = JSON.parse(seasonJson);
-          setSeasonData(parsed);
+          const parsed = JSON.parse(sessionJson);
+          setSessionData(parsed);
           localStorage.setItem('nst_syllabus_data', JSON.stringify(parsed));
           // TODO: Sync to Firebase if needed
           if (isFirebaseConnected) {
              // saveSyllabusData(parsed); // Need to implement this in firebase.ts if required
           }
-          setIsEditingSeason(false);
-          alert("Season Structure Updated!");
+          setIsEditingSession(false);
+          alert("Session Structure Updated!");
       } catch (e) {
           alert("Invalid JSON format. Please check syntax.");
       }
@@ -1320,7 +1320,7 @@ export default {
                   
                   <div className="col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-6 h-px bg-slate-100 my-2"></div>
                   
-                  <DashboardCard icon={Calendar} label="Season Structure" onClick={() => setActiveTab('SEASON_MANAGER')} color="teal" />
+                  <DashboardCard icon={Calendar} label="Session Structure" onClick={() => setActiveTab('SESSION_MANAGER')} color="teal" />
                   <DashboardCard icon={ListChecks} label="Chapters List" onClick={() => setActiveTab('SYLLABUS_MANAGER')} color="indigo" />
                   <DashboardCard icon={LayersIcon} label="Bulk Upload" onClick={() => setActiveTab('BULK_UPLOAD')} color="red" />
                   <DashboardCard icon={FileText} label="PDF Material" onClick={() => setActiveTab('CONTENT_PDF')} color="cyan" />
@@ -1532,13 +1532,13 @@ export default {
           </div>
       )}
 
-      {/* SEASON MANAGER (New) */}
-      {activeTab === 'SEASON_MANAGER' && (
+      {/* SESSION MANAGER (New) */}
+      {activeTab === 'SESSION_MANAGER' && (
           <div className="bg-white p-0 rounded-3xl shadow-sm border border-slate-200 animate-in slide-in-from-right overflow-hidden h-[85vh] flex flex-col">
               <div className="p-4 border-b flex justify-between items-center bg-white">
                   <div className="flex items-center gap-4">
                       <button onClick={() => setActiveTab('DASHBOARD')} className="bg-slate-100 p-2 rounded-full hover:bg-slate-200"><ArrowLeft size={20} /></button>
-                      <h3 className="text-xl font-black text-teal-800">Season Structure Manager</h3>
+                      <h3 className="text-xl font-black text-teal-800">Session Structure Manager</h3>
                   </div>
                   {/* Class Selector for Preview */}
                   <div className="flex gap-2">
@@ -1548,15 +1548,15 @@ export default {
                   </div>
               </div>
 
-              {/* SEASON CONTROLS */}
+              {/* SESSION CONTROLS */}
               <div className="p-4 bg-slate-50 border-b flex items-center justify-between">
                   <div className="flex items-center gap-4">
                       <div>
-                          <label className="text-[10px] font-bold text-slate-500 uppercase block">Season Start Date</label>
+                          <label className="text-[10px] font-bold text-slate-500 uppercase block">Session Start Date</label>
                           <input 
                               type="date" 
-                              value={localSettings.seasonStartDate ? localSettings.seasonStartDate.split('T')[0] : ''} 
-                              onChange={e => setLocalSettings({...localSettings, seasonStartDate: new Date(e.target.value).toISOString()})}
+                              value={localSettings.sessionStartDate ? localSettings.sessionStartDate.split('T')[0] : ''} 
+                              onChange={e => setLocalSettings({...localSettings, sessionStartDate: new Date(e.target.value).toISOString()})}
                               className="p-2 border rounded-lg text-sm font-bold text-slate-700 bg-white"
                           />
                       </div>
@@ -1571,18 +1571,18 @@ export default {
 
               {/* SPLIT VIEW: EDITOR & PREVIEW */}
               <div className="flex-1 flex overflow-hidden">
-                  {isEditingSeason ? (
+                  {isEditingSession ? (
                       <div className="flex-1 p-4 bg-slate-900 flex flex-col">
                           <div className="flex justify-between items-center mb-2 text-slate-400">
                                <p className="text-xs font-mono">Edit JSON Structure directly</p>
                                <div className="flex gap-2">
-                                   <button onClick={() => setIsEditingSeason(false)} className="px-3 py-1 bg-slate-700 rounded text-xs font-bold hover:bg-slate-600">Cancel</button>
-                                   <button onClick={handleSaveSeason} className="px-3 py-1 bg-green-600 text-white rounded text-xs font-bold hover:bg-green-700">Save JSON</button>
+                                   <button onClick={() => setIsEditingSession(false)} className="px-3 py-1 bg-slate-700 rounded text-xs font-bold hover:bg-slate-600">Cancel</button>
+                                   <button onClick={handleSaveSession} className="px-3 py-1 bg-green-600 text-white rounded text-xs font-bold hover:bg-green-700">Save JSON</button>
                                </div>
                           </div>
                           <textarea 
-                              value={seasonJson} 
-                              onChange={e => setSeasonJson(e.target.value)} 
+                              value={sessionJson} 
+                              onChange={e => setSessionJson(e.target.value)} 
                               className="flex-1 bg-slate-950 text-green-400 font-mono text-xs p-4 rounded-xl border border-slate-700 outline-none resize-none"
                               spellCheck={false}
                           />
@@ -1592,10 +1592,10 @@ export default {
                           <SyllabusStructure 
                                 user={{...users[0] || {}, classLevel: selClass}} // Mock user with selected class
                                 isAdmin={true}
-                                startDate={localSettings.seasonStartDate}
+                                startDate={localSettings.sessionStartDate}
                                 onEdit={() => {
-                                    setSeasonJson(JSON.stringify(seasonData, null, 2));
-                                    setIsEditingSeason(true);
+                                    setSessionJson(JSON.stringify(sessionData, null, 2));
+                                    setIsEditingSession(true);
                                 }}
                           />
                       </div>

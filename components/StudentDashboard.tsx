@@ -54,7 +54,7 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
   const globalMessage = localStorage.getItem('nst_global_message');
   const [activeExternalApp, setActiveExternalApp] = useState<string | null>(null);
   const [pendingApp, setPendingApp] = useState<{app: any, cost: number} | null>(null);
-  const [seasonContentSelection, setSeasonContentSelection] = useState<{chapter: Chapter, subject: Subject} | null>(null);
+  const [sessionContentSelection, setSessionContentSelection] = useState<{chapter: Chapter, subject: Subject} | null>(null);
   const [returnTab, setReturnToTab] = useState<StudentTab | null>(null);
 
   // GENERIC CONTENT FLOW STATE (Used for Video, PDF, MCQ)
@@ -400,8 +400,8 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
       setFullScreen(true);
   };
 
-  // --- SEASON TOPIC CLICK HANDLER ---
-  const handleSeasonTopicClick = async (topicName: string, subjectName: string) => {
+  // --- SESSION TOPIC CLICK HANDLER ---
+  const handleSessionTopicClick = async (topicName: string, subjectName: string) => {
       // 1. Map Subject Name to Object
       const allSubjects = getSubjectsList(user.classLevel || '10', user.stream || null);
       // Helper map same as in SyllabusStructure
@@ -465,7 +465,7 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
           if (matchedChapter) {
               // OPEN SELECTION MODAL
               setIsLoadingContent(false); // Stop loading, we are not navigating yet
-              setSeasonContentSelection({ chapter: matchedChapter, subject: targetSubject });
+              setSessionContentSelection({ chapter: matchedChapter, subject: targetSubject });
               setChapters(fetchedChapters); // Keep context
           } else {
               // NO MATCH FOUND - STRICT RESTRICTION
@@ -769,13 +769,13 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
               );
       }
 
-      // 3. SEASON TAB (New Syllabus Structure)
-      if (activeTab === 'SEASON') {
+      // 3. SESSION TAB (New Syllabus Structure)
+      if (activeTab === 'SESSION') {
           return (
               <SyllabusStructure 
                 user={user} 
-                startDate={settings?.seasonStartDate}
-                onTopicClick={handleSeasonTopicClick} 
+                startDate={settings?.sessionStartDate}
+                onTopicClick={handleSessionTopicClick} 
               />
           );
       }
@@ -1044,9 +1044,9 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
                 </button>
                 
                 {(!['11','12'].includes(user.classLevel || '')) && (
-                    <button onClick={() => { onTabChange('SEASON'); }} className={`flex flex-col items-center justify-center w-full h-full ${activeTab === 'SEASON' ? 'text-blue-600' : 'text-slate-400'}`}>
-                        <Calendar size={24} fill={activeTab === 'SEASON' ? "currentColor" : "none"} />
-                        <span className="text-[10px] font-bold mt-1">Season</span>
+                    <button onClick={() => { onTabChange('SESSION'); }} className={`flex flex-col items-center justify-center w-full h-full ${activeTab === 'SESSION' ? 'text-blue-600' : 'text-slate-400'}`}>
+                        <Calendar size={24} fill={activeTab === 'SESSION' ? "currentColor" : "none"} />
+                        <span className="text-[10px] font-bold mt-1">Session</span>
                     </button>
                 )}
 
@@ -1208,8 +1208,8 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
             onClose={() => setAlertConfig(prev => ({...prev, isOpen: false}))}
         />
 
-        {/* SEASON CONTENT SELECTION MODAL */}
-        {seasonContentSelection && (
+        {/* SESSION CONTENT SELECTION MODAL */}
+        {sessionContentSelection && (
             <div className="fixed inset-0 z-[100] bg-slate-900/90 backdrop-blur-md flex items-end sm:items-center justify-center sm:p-4 animate-in fade-in duration-200">
                 <div className="bg-white rounded-t-3xl sm:rounded-3xl p-6 w-full max-w-sm shadow-2xl relative overflow-hidden">
                     {/* Header Decoration */}
@@ -1219,21 +1219,21 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
                         <div className="inline-block p-3 rounded-full bg-slate-100 mb-3 border-4 border-white shadow-lg">
                             <BookOpen size={28} className="text-slate-700" />
                         </div>
-                        <h3 className="text-xl font-black text-slate-800 leading-tight mb-1">{seasonContentSelection.chapter.title}</h3>
-                        <p className="text-xs text-slate-500 uppercase tracking-widest font-bold">{seasonContentSelection.subject.name}</p>
+                        <h3 className="text-xl font-black text-slate-800 leading-tight mb-1">{sessionContentSelection.chapter.title}</h3>
+                        <p className="text-xs text-slate-500 uppercase tracking-widest font-bold">{sessionContentSelection.subject.name}</p>
                     </div>
                     
                     <div className="space-y-3">
                         {/* PDF / NOTES */}
                         <button 
                             onClick={() => {
-                                setSelectedSubject(seasonContentSelection.subject);
-                                setSelectedChapter(seasonContentSelection.chapter);
+                                setSelectedSubject(sessionContentSelection.subject);
+                                setSelectedChapter(sessionContentSelection.chapter);
                                 setContentViewStep('PLAYER');
-                                setReturnToTab('SEASON');
+                                setReturnToTab('SESSION');
                                 setFullScreen(true);
                                 onTabChange('PDF');
-                                setSeasonContentSelection(null);
+                                setSessionContentSelection(null);
                             }}
                             className="w-full p-4 bg-white border-2 border-slate-100 hover:border-blue-500 hover:bg-blue-50 rounded-2xl flex items-center gap-4 group transition-all shadow-sm hover:shadow-md"
                         >
@@ -1250,13 +1250,13 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
                         {/* VIDEO */}
                         <button 
                             onClick={() => {
-                                setSelectedSubject(seasonContentSelection.subject);
-                                setSelectedChapter(seasonContentSelection.chapter);
+                                setSelectedSubject(sessionContentSelection.subject);
+                                setSelectedChapter(sessionContentSelection.chapter);
                                 setContentViewStep('PLAYER');
-                                setReturnToTab('SEASON');
+                                setReturnToTab('SESSION');
                                 setFullScreen(true);
                                 onTabChange('VIDEO');
-                                setSeasonContentSelection(null);
+                                setSessionContentSelection(null);
                             }}
                             className="w-full p-4 bg-white border-2 border-slate-100 hover:border-red-500 hover:bg-red-50 rounded-2xl flex items-center gap-4 group transition-all shadow-sm hover:shadow-md"
                         >
@@ -1274,13 +1274,13 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
                         <div className="grid grid-cols-2 gap-3">
                             <button 
                                 onClick={() => {
-                                    setSelectedSubject(seasonContentSelection.subject);
-                                    setSelectedChapter(seasonContentSelection.chapter);
+                                    setSelectedSubject(sessionContentSelection.subject);
+                                    setSelectedChapter(sessionContentSelection.chapter);
                                     setContentViewStep('PLAYER');
-                                    setReturnToTab('SEASON');
+                                    setReturnToTab('SESSION');
                                     setFullScreen(true);
                                     onTabChange('MCQ');
-                                    setSeasonContentSelection(null);
+                                    setSessionContentSelection(null);
                                 }}
                                 className="p-3 bg-white border-2 border-slate-100 hover:border-purple-500 hover:bg-purple-50 rounded-2xl flex flex-col items-center justify-center gap-2 group transition-all shadow-sm"
                             >
@@ -1288,7 +1288,7 @@ export const StudentDashboard: React.FC<Props> = ({ user, dailyStudySeconds, onS
                                 <span className="font-bold text-xs text-slate-700 group-hover:text-purple-700">Practice MCQs</span>
                             </button>
                             <button 
-                                onClick={() => setSeasonContentSelection(null)}
+                                onClick={() => setSessionContentSelection(null)}
                                 className="p-3 bg-slate-100 hover:bg-slate-200 rounded-2xl flex flex-col items-center justify-center gap-2 transition-all font-bold text-xs text-slate-500"
                             >
                                 <X size={20} />

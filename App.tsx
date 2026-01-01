@@ -277,6 +277,11 @@ const App: React.FC = () => {
       if (storedSettings) {
           try {
               const parsed = JSON.parse(storedSettings);
+              // MIGRATION: if old key seasonStartDate exists, copy to sessionStartDate for compatibility
+              if ((parsed as any).seasonStartDate && !(parsed as any).sessionStartDate) {
+                  (parsed as any).sessionStartDate = (parsed as any).seasonStartDate;
+                  localStorage.setItem('nst_system_settings', JSON.stringify(parsed));
+              }
               loadedSettings = { ...state.settings, ...parsed };
               setState(prev => ({ 
                   ...prev, 

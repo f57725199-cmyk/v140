@@ -24,7 +24,7 @@ export const AnalyticsPage: React.FC<Props> = ({ user, onBack, settings }) => {
   const avgTimePerQ = totalQuestions > 0 ? (totalTime / totalQuestions).toFixed(1) : '0';
 
   // Topic Analysis
-  const topicStats = user.topicStrength || {};
+  const topicStats = (user.topicStrength || {}) as Record<string, { correct: number, total: number }>;
   
   const getTagColor = (tag: PerformanceTag) => {
       switch(tag) {
@@ -84,7 +84,7 @@ export const AnalyticsPage: React.FC<Props> = ({ user, onBack, settings }) => {
                 </h3>
                 {Object.keys(topicStats).length === 0 && <p className="text-slate-400 text-sm text-center py-4">No data yet.</p>}
                 <div className="space-y-4">
-                    {Object.entries(topicStats).map(([topic, stats]) => {
+                    {Object.entries(topicStats).map(([topic, stats]: [string, {correct: number, total: number}]) => {
                         const pct = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
                         let barColor = 'bg-red-500';
                         if (pct >= 80) barColor = 'bg-green-500';
